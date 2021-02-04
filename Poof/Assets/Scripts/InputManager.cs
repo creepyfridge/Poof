@@ -6,7 +6,7 @@ public static class InputManager
 {
     public static bool getJump()
     {
-        return ;
+        return false;
     }
 
     public static bool getJumpDown()
