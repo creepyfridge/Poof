@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using myInput;
 
+using System;
+
 [RequireComponent(typeof(CharacterController))]
-public class CCMovement2D : MonoBehaviour
+public class CCMovement2D : ShadowTarget
 {
     CharacterController _controller = null;
     float _speed = 0.0f;
-
     
     [SerializeField]
     float maxSpeed = 20.0f;
@@ -29,6 +30,8 @@ public class CCMovement2D : MonoBehaviour
     float lastInputX = 0.0f;
 
 
+    int shadowID = -1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,12 +43,16 @@ public class CCMovement2D : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(shadowID != -1)
+            ShadowManager.Instance.record(shadowID, new Tuple<DateTime, Vector3>(DateTime.Now, transform.position));
+
         if (isGrounded())
             groundedMovement();
         else
             airborneMovement();
 
         _controller.Move(new Vector3(0, 0, _speed) * Time.deltaTime);
+        transform.position = new Vector3(0.0f, transform.position.y, transform.position.z);
     }
 
     //needed because the character crontroller grounded check can fail
@@ -68,7 +75,7 @@ public class CCMovement2D : MonoBehaviour
         else if(input != 0)
         {
             //player is holding button
-            _speed += maxSpeed/(accelTime) * Time.deltaTime * input;
+            _speed += (maxSpeed/(accelTime)) * Time.deltaTime * input;
             _speed = Mathf.Clamp(_speed, -maxSpeed, maxSpeed);
         }
         else if(_speed != 0.0f)
@@ -79,7 +86,7 @@ public class CCMovement2D : MonoBehaviour
                 slow *= -1.0f;
             _speed -= slow;
 
-            if (Mathf.Abs(_speed) < 0.05f)
+            if (Mathf.Abs(_speed) < Mathf.Abs(slow))
                 _speed = 0.0f;
         }
         lastInputX = input;
@@ -98,5 +105,10 @@ public class CCMovement2D : MonoBehaviour
     void jump()
     {
 
+    }
+
+    public override void registerShadow(int id)
+    {
+        shadowID = id;
     }
 }
