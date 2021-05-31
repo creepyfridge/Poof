@@ -295,7 +295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 1884895407}
-  TIME_OFFSET: 500
+  TIME_OFFSET: 120
 --- !u!136 &778289380
 CapsuleCollider:
   m_ObjectHideFlags: 0
