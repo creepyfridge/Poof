@@ -10,20 +10,12 @@ namespace myInput
         public static float getHorizontal()
         {
             float value = 0.0f;
-            if(getMoveLeftDown())
-            {
-                value -= 0.75f;
-            }
-            else if(getMoveLeft())
+            if (getMoveLeft())
             {
                 value -= 1.0f;
             }
 
-            if (getMoveRightDown())
-            {
-                value += 0.75f;
-            }
-            else if (getMoveRight())
+            if (getMoveRight())
             {
                 value += 1.0f;
             }
